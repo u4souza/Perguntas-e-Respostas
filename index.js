@@ -1,6 +1,17 @@
 const express = require('express');
 const app = express ();
 const bodyParser = require ('body-parser');
+const connection = require ('./database/database')
+
+//DATABASE
+connection
+.authenticate()
+.then(() => {
+console.log('Conexão feita com sucesso!');
+})
+.catch((msgErro) =>{
+    console.log(msgErro);
+})
 
 
 // ULTILIZANDO O EJS VIEW ENGINE
@@ -32,6 +43,6 @@ app.post('/salvarpergunta',(req, res) => {
 
 
 app.listen (8000, () => {
-    console.log ('APP RODANDO');
+    console.log ('App Iniciado!');
 
 });

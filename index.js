@@ -1,24 +1,31 @@
 const express = require('express');
 const app = express ();
+const bodyParser = require ('body-parser');
+
 
 // ULTILIZANDO O EJS VIEW ENGINE
 app.set ('view engine', 'ejs');
+
 // ARQUIVOS ESTÁTICOS
 app.use(express.static('public'));
 
-app.get ('/', (req, res) => {
-    res.render('index');
+//VAI DECODIFICAR OS VALORES DO FORMULARIO
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
-});
+//ROTAS
+app.get ('/', (req, res) => {
+    res.render('index');});
 
 app.get('/perguntar', (req, res) => {
     res.render ('perguntar');
 });
 
-
-
-
-
+app.post('/salvarpergunta',(req, res) => {
+    var titulo = req.body.titulo;
+    var descricao= req.body.descricao;
+    res.send('FORMULÁRIO RECEBIDO!' + ' Título ' + titulo + ' ' + 'Descrição ' + descricao);
+});
 
 
 

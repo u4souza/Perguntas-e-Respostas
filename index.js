@@ -27,7 +27,9 @@ app.use(bodyParser.json());
 
 //ROTAS
 app.get ('/', (req, res) => {
-    Pergunta.findAll({raw: true}).then(perguntas =>{
+    Pergunta.findAll({raw: true, order:[
+        ['id', 'DESC'] //ORDEM DECRESCENTE
+    ]}).then(perguntas =>{
         res.render('index', {
             perguntas: perguntas
         });
@@ -39,6 +41,8 @@ app.get('/perguntar', (req, res) => {
     res.render ('perguntar');
 });
 
+
+// RECEBER OS DADOS E DIRECIONAR PARA HOME
 app.post('/salvarpergunta',(req, res) => {
     var titulo = req.body.titulo;
     var descricao= req.body.descricao;
@@ -52,6 +56,21 @@ app.post('/salvarpergunta',(req, res) => {
 });
 
 
+//ENCONTRAR A PERGUNTA PELO ID E DIRECIONAR PARRA PERGUNTA
+app.get ('/pergunta/:id', (req, res) =>{
+    var id = req.params.id;
+    Pergunta.findOne({
+        where: {id: id}
+    }).then(pergunta => {
+        if (pergunta != undefined){
+            res.render('pergunta', {
+                pergunta: pergunta
+            });
+        }else {
+            res.redirect('/');
+        }
+    });
+});
 
 
 
